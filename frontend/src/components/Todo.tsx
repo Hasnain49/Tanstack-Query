@@ -14,7 +14,7 @@ const Todo = () => {
 
     console.log(todosIdsQuery.data)
   return (
-    <>{todosIdsQuery.data?.map((id)=> (<p key={id}>{id}</p>))}</>
+    <>{todosIdsQuery.data?.map((id)=> (<p key={id}>ID: {id}</p>))}</>
   )
 }
 
