@@ -1,9 +1,16 @@
 import React from 'react'
 import { useTodos, useTodosIds } from '../services/queries'
+import { useCreateTodo } from '../services/mutations'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Todo } from '../types/todo'
 
 
-const Todo = () => {
+const Todos = () => {
     const todosIdsQuery = useTodosIds()
+
+    const createTodoMutation = useCreateTodo()
+
+    const {register, handleSubmit} = useForm<Todo>()
     const todosQueries = useTodos(todosIdsQuery.data)
 
     if(todosIdsQuery.isLoading){
@@ -14,10 +21,13 @@ const Todo = () => {
         return <span>some error occurred!</span>
     }
 
-    console.log(todosIdsQuery.data)
+    const handleCreateTodoSubmit: SubmitHandler<Todo> = (data)=>{
+        createTodoMutation.mutate(data);
+    }
   return (
     <>
     {/* {todosIdsQuery.data?.map((id)=> (<p key={id}>ID: {id}</p>))} */}
+    <form onSubmit={handleSubmit(handleCreateTodoSubmit)}></form>
      <ul>
        {todosQueries.map(({data})=>(
         <li key={data?.id}>
@@ -33,4 +43,4 @@ const Todo = () => {
   )
 }
 
-export default Todo
+export default Todos
